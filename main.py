@@ -20,6 +20,11 @@ snail_rect = snail_surf.get_rect(midbottom = (700,300))
 
 player_surf = pygame.image.load('graphics/Player/player_walk_1.png').convert_alpha()
 player_rect = player_surf.get_rect(midbottom = (80,300))
+player_gravity = 0
+
+
+def is_touching_floor():
+    return player_rect.bottom >= 300
 
 
 while True:
@@ -27,10 +32,12 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-        #if event.type == pygame.MOUSEMOTION:
-        #    if player_rect.collidepoint(event.pos) : print("Collision")
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if player_rect.collidepoint(event.pos) and is_touching_floor(): 
+                player_gravity = -20
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE: print("Jump")
+            if event.key == pygame.K_SPACE and is_touching_floor():
+                player_gravity = -20
         if event.type == pygame.KEYUP:
             print("Key up")
 
@@ -44,17 +51,14 @@ while True:
     snail_rect.x -= 5
     if snail_rect.right <= 0: snail_rect.left = 800
     
-    player_rect.left += 10
+    # Player
+    player_gravity += 1
+    player_rect.y += player_gravity
+    print(player_gravity)
+    if player_rect.bottom >= 300: 
+        player_rect.bottom = 300
+        player_gravity = 0
     screen.blit(player_surf,player_rect)
-
-    #keys = pygame.key.get_pressed()
-    #if keys[pygame.K_SPACE]: print("Jump")
-
-    #if player_rect.colliderect(snail_rect): 
-    #    print("Collision")
-
-    #mouse_pos = pygame.mouse.get_pos()
-    #if player_rect.collidepoint(mouse_pos) : print("Collision")
 
 
     pygame.display.update()
