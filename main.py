@@ -7,6 +7,8 @@ screen = pygame.display.set_mode((800,400))
 pygame.display.set_caption('Runner')
 
 clock = pygame.time.Clock()
+test_surface = pygame.Surface((100,200))
+test_surface.fill((255,255,255))
 
 
 while True:
@@ -14,7 +16,6 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
-    # draw all our elements    
-    # update everything
+    screen.blit(test_surface,(200,100))
     pygame.display.update()
     clock.tick(60)
