@@ -11,7 +11,7 @@ def display_score():
 
 
 def obstacle_movement(obstacle_list):
-    movement_speed = 5 + (pygame.time.get_ticks() - start_time)//10000
+    movement_speed = 5 + (pygame.time.get_ticks() - start_time)//1000
     if obstacle_list:
         for obstacle_rect in obstacle_list:
             obstacle_rect.x -= movement_speed
@@ -24,11 +24,12 @@ def obstacle_movement(obstacle_list):
     else: return []
 
 
-def collisions(obstacle_list):
-    if obstacle_list:
-        for obstacle_rect in obstacle_list:
-            if obstacle_rect.colliderect(player_rect):
-                return True
+def collisions(player, obstacles):
+    if obstacles:
+        for obstacle_rect in obstacles:
+            if player.colliderect(obstacle_rect):
+                return False
+    return True
 
 
 pygame.init()
@@ -107,12 +108,13 @@ while True:
         obstacle_rect_list = obstacle_movement(obstacle_rect_list)
 
         # Collision
-        if collisions(obstacle_rect_list): 
-            game_active = False
-            obstacle_rect_list.clear()
+        game_active = collisions(player_rect,obstacle_rect_list)
 
     else:
         screen.fill("Yellow")
+        obstacle_rect_list.clear()
+        player_rect.midbottom = (80,300)
+        
 
 
     pygame.display.update()
