@@ -83,6 +83,13 @@ def display_score():
     screen.blit(score_surf,score_rect)
 
 
+def collision_sprite():
+    if pygame.sprite.spritecollide(player.sprite, obstacle_group, False):
+        obstacle_group.empty()
+        return False
+    else: return True
+
+
 pygame.init()
 clock = pygame.time.Clock()
 screen = pygame.display.set_mode((1280,720))
@@ -138,11 +145,12 @@ while True:
         obstacle_group.draw(screen)
         obstacle_group.update()
 
+        # Collision
+        game_active = collision_sprite()
+
     # Gameover winodw, could be a menu window
     else:
         screen.fill("Yellow")
-        obstacle_rect_list.clear()
-        player_rect.midbottom = (80,300)
         
 
     pygame.display.update()
